@@ -1,30 +1,29 @@
-# Следующие шаги
+# План дальнейшей работы
 
-## Этап 0 — Подготовка хоста
-```bash
-bash scripts/00-install-deps.sh
-bash scripts/01-clone-research.sh
-```
+## Этап 1 — Root Shell (делать первым)
+1. Установить зависимости (`scripts/00-install-deps.sh`)
+2. Клонировать research (`scripts/01-clone-research.sh`)
+3. Пройти `docs/darwin-vm-guide.md`
+4. Получить работающий root shell
 
-## Этап 1 — Root shell (самый быстрый результат)
-1. Перейди в `research/darwin-vm`
-2. Следуй README upstream (нужен либо Mac для get_files.sh, либо linux-порт)
-3. Собери qemu-sptm
-4. Запусти `./run.sh` → должен появиться root shell
+## Этап 2 — Кастомизация
+- Добавить свои бинарники в ramdisk
+- Патчить kernel / SPTM
+- Настроить SSH over UART
+- Исследовать dyld shared cache
 
-## Этап 2 — Попытка iOS 14 + SpringBoard
-1. Изучи Inferno / старые wiki qemu-t8030
-2. Подготовь IPSW iOS 14 для t8030-устройства
-3. Извлеки kernelcache + DeviceTree + ramdisk
-4. Собери форк и попробуй boot
+## Этап 3 — Попытка графики (сложно)
+- Изучить Inferno / qemu-t8030
+- Попробовать iOS 14 на t8030
+- Смотреть eShard writeups по SpringBoard
+- Патчить QuartzCore / отключать Metal-зависимости
 
-## Этап 3 — Патчи
-- Отключение/заглушка SEP-related проверок
-- CommCenter
-- MobileKeyBag / authentication
-- Software rendering fallback (QuartzCore)
+## Этап 4 — Долгосрочные цели
+- Улучшение display-эмуляции
+- Input (touch)
+- Networking
+- Более полный userspace
 
-## Требования к железу
-- Минимум 16 ГБ RAM (лучше 32+)
-- Много места на диске (IPSW + сборки QEMU)
-- Желательно aarch64 host (KVM) — иначе только TCG (очень медленно)
+## Что можно делать прямо в этом репозитории
+
+Пиши задачи — я буду добавлять скрипты, документацию и разборы ошибок сюда.

@@ -1,20 +1,21 @@
-# Известные открытые проекты (2026)
+# Ключевые открытые проекты (актуально на октябрь 2026)
 
-## Активные / полезные
+## Активные и полезные
 
-| Проект | Что умеет | Ссылка |
-|--------|-----------|--------|
-| **jprx/darwin-vm** | Root shell на iOS 12–27 + macOS | https://github.com/jprx/darwin-vm |
-| **jprx/qemu-sptm** | QEMU с поддержкой SPTM/TXM | https://github.com/jprx/qemu-sptm |
-| **ChefKissInc/Inferno** | Форк qemu-t8030, display/IOMFB | https://github.com/ChefKissInc/Inferno |
-| **thecybersandeep/darwin-vm-windows** | Порт подготовки firmware под Linux/WSL | https://github.com/thecybersandeep/darwin-vm-windows |
+| Проект | Описание | Ссылка |
+|--------|----------|--------|
+| **jprx/darwin-vm** | Root shell на iOS 12–27 + macOS. Самый актуальный. | https://github.com/jprx/darwin-vm |
+| **jprx/qemu-sptm** | QEMU с поддержкой SPTM/TXM/MIE | https://github.com/jprx/qemu-sptm |
+| **thecybersandeep/darwin-vm-windows** | Linux/WSL-порт подготовки firmware (без Mac) | https://github.com/thecybersandeep/darwin-vm-windows |
+| **ChefKissInc/Inferno** | Форк qemu-t8030, работа над display | https://github.com/ChefKissInc/Inferno |
 
-## Архивные / research
+## Исторические / research
 
-- TrungNguyen1909/qemu-t8030 (iPhone 11, iOS 14, restore + shell)
-- eShard writeups (SpringBoard на QEMU)
+- TrungNguyen1909/qemu-t8030 (iPhone 11, iOS 14)
+- eShard — writeups по эмуляции iOS 14 + SpringBoard
 - TruEMU (Black Hat 2022)
 
-## Коммерческие / macOS-only
-- Corellium
-- vphone / vphone-cli (Virtualization.framework + PCC)
+## Коммерческие / закрытые
+
+- Corellium — полноценные виртуальные iPhone
+- vphone / vphone-cli — полный iOS VM на Apple Silicon через Virtualization.framework

@@ -6,24 +6,23 @@ RESEARCH="$ROOT/research"
 mkdir -p "$RESEARCH"
 cd "$RESEARCH"
 
-echo "[*] Cloning key research repositories..."
+echo "[*] Cloning key research repositories into $RESEARCH ..."
 
-if [ ! -d darwin-vm ]; then
-  git clone --recursive https://github.com/jprx/darwin-vm.git
-fi
+clone_if_missing() {
+  local name="$1"
+  local url="$2"
+  if [ ! -d "$name" ]; then
+    echo "  → cloning $name"
+    git clone --recursive "$url" "$name" || git clone "$url" "$name" || true
+  else
+    echo "  → $name already exists"
+  fi
+}
 
-if [ ! -d qemu-sptm ]; then
-  # уже submodule в darwin-vm, но клонируем отдельно на всякий
-  git clone https://github.com/jprx/qemu-sptm.git || true
-fi
+clone_if_missing "darwin-vm" "https://github.com/jprx/darwin-vm.git"
+clone_if_missing "qemu-sptm" "https://github.com/jprx/qemu-sptm.git"
+clone_if_missing "Inferno" "https://github.com/ChefKissInc/Inferno.git"
+clone_if_missing "darwin-vm-windows" "https://github.com/thecybersandeep/darwin-vm-windows.git"
 
-if [ ! -d Inferno ]; then
-  git clone https://github.com/ChefKissInc/Inferno.git || true
-fi
-
-if [ ! -d darwin-vm-windows ]; then
-  git clone https://github.com/thecybersandeep/darwin-vm-windows.git || true
-fi
-
-echo "[+] Research repos are in $RESEARCH"
-echo "    Дальше читай docs/next-steps.md"
+echo
+echo "[+] Done. Смотри docs/darwin-vm-guide.md и docs/next-steps.md"
