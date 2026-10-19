@@ -1,0 +1,73 @@
+name: Build qemu-sptm (research)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - 'scripts/**'
+      - '.github/workflows/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout this repo
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential git python3 python3-pip \
+            libpixman-1-dev libglib2.0-dev libfdt-dev libslirp-dev \
+            ninja-build meson pkg-config zlib1g-dev \
+            libcapstone-dev libncurses-dev libusb-1.0-0-dev \
+            libgnutls28-dev libtasn1-dev cmake \
+            jq curl wget flex bison libssl-dev
+
+      - name: Clone qemu-sptm
+        run: |
+          git clone --depth 1 https://github.com/jprx/qemu-sptm.git research/qemu-sptm
+          cd research/qemu-sptm
+          git submodule update --init --recursive || true
+
+      - name: Configure qemu-sptm
+        working-directory: research/qemu-sptm
+        run: |
+          mkdir -p build
+          cd build
+          ../configure \
+            --target-list=aarch64-softmmu \
+            --disable-pvg \
+            --disable-werror \
+            --disable-docs || {
+              echo "Configure failed, showing config.log if exists"
+              cat config.log || true
+              exit 1
+            }
+
+      - name: Build qemu-sptm (may OOM on free runners)
+        working-directory: research/qemu-sptm/build
+        run: |
+          # Free runners have ~7GB RAM. Full parallel make can OOM.
+          # Try with limited jobs first.
+          make -j2 || make -j1 || {
+            echo "Build failed (likely OOM or missing deps)"
+            exit 1
+          }
+
+      - name: Check binary
+        run: |
+          ls -lh research/qemu-sptm/build/qemu-system-aarch64 || true
+          file research/qemu-sptm/build/qemu-system-aarch64 || true
+
+      - name: Upload binary if built
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qemu-system-aarch64
+          path: research/qemu-sptm/build/qemu-system-aarch64
+          retention-days: 7
